@@ -1,0 +1,54 @@
+import com.mintrumpet.pojo.executeparam.ShareExecuteParam
+import com.mintrumpet.pojo.fact.ShareFact
+
+global com.mintrumpet.service.share.ShareDroolsExecuteService shareDroolsExecuteService;
+
+dialect "java"
+
+/**
+    每个rule匹配对应的条件
+**/
+
+rule shareAddLowLevelTag
+    when
+        $shareFact : ShareFact(shareCount == 1)
+    then
+        ShareExecuteParam param = new ShareExecuteParam();
+        param.setUser($shareFact.getUser());
+        param.setShareCount($shareFact.getShareCount());
+        param.setTagTypeSign(0);
+        shareDroolsExecuteService.addTag(param);
+    end
+
+rule shareAddMiddleLevelTag
+    when
+        $shareFact : ShareFact(shareCount >= 2 && shareCount <= 5)
+    then
+        ShareExecuteParam param = new ShareExecuteParam();
+        param.setUser($shareFact.getUser());
+        param.setShareCount($shareFact.getShareCount());
+        param.setTagTypeSign(1);
+        shareDroolsExecuteService.addTag(param);
+    end
+
+rule shareAddHighLevelTag
+    when
+        $shareFact : ShareFact(shareCount >= 6 && shareCount <= 20)
+    then
+        ShareExecuteParam param = new ShareExecuteParam();
+        param.setUser($shareFact.getUser());
+        param.setShareCount($shareFact.getShareCount());
+        param.setTagTypeSign(2);
+        shareDroolsExecuteService.addTag(param);
+    end
+
+rule shareAddDeepLevelTag
+    when
+        $shareFact : ShareFact(shareCount >= 21 && shareCount <= 50)
+    then
+        ShareExecuteParam param = new ShareExecuteParam();
+        param.setUser($shareFact.getUser());
+        param.setShareCount($shareFact.getShareCount());
+        param.setTagTypeSign(3);
+        shareDroolsExecuteService.addTag(param);
+    end
